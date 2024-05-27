@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Image from "next/image";
 import "tailwindcss/tailwind.css";
 import { v4 as uuidv4 } from "uuid";
 import { EventModel } from "~~/models/event.model";
@@ -18,10 +19,18 @@ export const Event: React.FC<EventModel> = ({ id, title, description, imageUrl, 
     } catch {}
   };
 
+  const [imgError, setImgError] = useState<boolean>(false);
+
   return (
     <div className="card w-96 bg-base-100 shadow-xl">
       <figure>
-        <img src={imageUrl} alt="Event" />
+        <Image
+          src={imgError ? "/logogm2.jpeg" : imageUrl}
+          alt="Event"
+          width={400}
+          height={400}
+          onError={() => setImgError(true)}
+        />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{title}</h2>

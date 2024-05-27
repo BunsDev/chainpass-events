@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { useGlobalState } from "~~/services/store/store";
 
 const TicketList: React.FC = () => {
@@ -17,7 +18,7 @@ const TicketList: React.FC = () => {
           {purchasedTickets.map(ticket => (
             <div key={ticket.id} className="card w-96 bg-base-100 shadow-xl">
               <figure>
-                <img src={ticket.imageUrl} alt="Ticket" />
+                <Image src={ticket.imageUrl} alt="Ticket" width={400} height={400} />
               </figure>
               <div className="card-body">
                 <h2 className="card-title">{ticket.title}</h2>
