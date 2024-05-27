@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./EventTicket.sol";
+import "./EventTicketMinter.sol";
 
 contract EventTicketManager is Ownable {
     struct Event {
@@ -15,13 +15,13 @@ contract EventTicketManager is Ownable {
 
     mapping(uint256 => Event) public events;
     uint256 public nextEventId;
-    EventTicket public collection;
+    EventTicketMinter public collection;
 
     event EventCreated(uint256 indexed eventId, string name, uint256 date, uint256 ticketSupply);
     event TicketClaimed(uint256 indexed eventId, address indexed user, uint256 tokenId);
 
     constructor(address collectionAddress) {
-        collection = EventTicket(collectionAddress);
+        collection = EventTicketMinter(collectionAddress);
     }
 
     function createEvent(string memory name, uint256 date, uint256 ticketSupply) external onlyOwner {

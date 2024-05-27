@@ -7,11 +7,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "hardhat/console.sol";
 
-contract EventTicket is ERC721, Ownable {
+contract EventTicketMinter is ERC721, Ownable {
     uint256 public _nextTokenId;
 
     constructor()
-        ERC721("EventTicket", "EES")
+        ERC721("EventTicket", "GM2T")
     {}
 
     function batchMint(address to, uint256 quantity) external {

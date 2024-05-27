@@ -7,27 +7,25 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  const eventTicket = await deploy("EventTicket", {
+  const eventTicketMinter = await deploy("EventTicketMinter", {
     from: deployer,
     log: true,
   });
 
-  const eventTicketMinter = await deploy("EventTicketManager", {
+  await deploy("EventTicketManager", {
     from: deployer,
-    args: [eventTicket.address],
+    args: [eventTicketMinter.address],
     log: true,
   });
 
-  // Verify ownership of EventTicket
-  const eventTicketContract = await ethers.getContractAt("EventTicket", eventTicket.address);
-  const eventTicketOwner = await eventTicketContract.owner();
-  console.log(`EventTicket Owner: ${eventTicketOwner}`);
+  const eventTicketMinterDeployed = await ethers.getContractAt("EventTicketMinter", eventTicketMinter.address);
 
-  // Verify ownership of EventTicketMinter
-  const eventTicketMinterContract = await ethers.getContractAt("EventTicketManager", eventTicketMinter.address);
-  const eventTicketMinterOwner = await eventTicketMinterContract.owner();
-  console.log(`EventTicketMinter Owner: ${eventTicketMinterOwner}`);
+  console.log(
+    "Hello, contract name and owner: ",
+    await eventTicketMinterDeployed.name(),
+    await eventTicketMinterDeployed.owner(),
+  );
 };
 
 export default func;
-func.tags = ["EventTicket", "EventTicketManager"];
+func.tags = ["EventTicketMinter", "EventTicketManager"];
