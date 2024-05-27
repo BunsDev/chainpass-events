@@ -14,6 +14,9 @@ const nextConfig = {
     config.externals.push("pino-pretty", "lokijs", "encoding");
     return config;
   },
+  images: {
+    domains: ['source.unsplash.com'],
+  },
 };
 
 module.exports = nextConfig;
