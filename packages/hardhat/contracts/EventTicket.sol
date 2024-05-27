@@ -3,26 +3,27 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract EventTicket is ERC721, ERC721Burnable, Ownable {
+import "hardhat/console.sol";
+
+contract EventTicket is ERC721, Ownable {
     uint256 public _nextTokenId;
 
-    constructor(address initialOwner)
+    constructor()
         ERC721("EventTicket", "EES")
     {}
 
-    function mintEventToken(address to) public onlyOwner returns (uint256) {
+    function batchMint(address to, uint256 quantity) external {
+        for (uint256 i = 0; i < quantity; i++) {
+            mintTokens(to);
+        }
+    }
+
+    function mintTokens(address to) internal returns (uint256) {
         uint256 tokenId = _nextTokenId;
         _mint(to, tokenId);
         _nextTokenId++;
         return tokenId;
-    }
-
-    function batchMint(address to, uint256 quantity) external onlyOwner {
-        for (uint256 i = 0; i < quantity; i++) {
-            mintEventToken(to);
-        }
     }
 }
