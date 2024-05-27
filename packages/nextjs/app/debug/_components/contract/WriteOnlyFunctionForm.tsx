@@ -41,8 +41,6 @@ export const WriteOnlyFunctionForm = ({
 
   const { data: result, isPending, writeContractAsync } = useWriteContract();
 
-  console.log(getParsedContractFunctionArgs(form), BigInt(txValue));
-
   const handleWrite = async () => {
     if (writeContractAsync) {
       try {
