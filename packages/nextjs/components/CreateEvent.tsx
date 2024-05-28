@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import { EventModel } from "~~/models/event.model";
 import { useGlobalState } from "~~/services/store/store";
@@ -86,13 +87,15 @@ export const CreateEvent: React.FC = () => {
               </div>
             </form>
             <div className="bg-zinc-100 flex-1 p-8 flex-col">
-              <div className="bg-zinc-300 rounded-md min-h-[80%]">Hola</div>
+              <div className="bg-zinc-300 rounded-md min-h-[80%]">
+                <Image src="/logogm2.jpeg" alt="Event" className="w-full" width={400} height={400} />
+              </div>
               <div className="mt-8">
                 <button
                   className="text-sm  bg-secondary py-2 px-4 rounded-lg  font-semibold"
                   onClick={() => alert("image generated")}
                 >
-                  Generate Image
+                  Generate new Image
                 </button>
               </div>
             </div>
