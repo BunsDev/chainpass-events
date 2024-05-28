@@ -6,14 +6,12 @@ import TicketList from "~~/components/TicketList";
 const EventsPage: NextPage = () => {
   return (
     <>
-      <div className="text-center mt-8 bg-secondary p-10">
-        <header className="bg-gray-800 text-white p-4">
-          <h1 className="text-4xl my-0">My tickets</h1>
+      <div className="text-center mt-4 w-8/12 mx-auto  p-10">
+        <header className=" text-white p-4">
+          <h1 className="text-4xl font-semibold">My tickets</h1>
         </header>
 
-        <main className="p-4">
-          <TicketList />
-        </main>
+        <TicketList />
       </div>
     </>
   );
