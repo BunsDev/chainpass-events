@@ -30,3 +30,21 @@ p {
 .btn.btn-ghost {
   @apply shadow-none;
 }
+
+.border-dashed-lines {
+  position: relative;
+  border: none;
+}
+.border-dashed-lines::before,
+.border-dashed-lines::after {
+  content: '';
+  position: absolute;
+  width: calc(100% - 1rem);
+  height: calc(100% - 1rem);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px dashed gray;
+  border-radius: 0.5rem;
+  pointer-events: none;
+}
