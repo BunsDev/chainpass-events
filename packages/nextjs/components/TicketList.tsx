@@ -20,7 +20,7 @@ const TicketList: React.FC = () => {
               <figure>
                 <Image src={ticket.imageUrl} alt="Ticket" width={400} height={400} />
               </figure>
-              <div className="card-body">
+              <div className="bg-secondary   p-4  py-8 rounded-b-2xl">
                 <h2 className="card-title">{ticket.title}</h2>
               </div>
             </div>

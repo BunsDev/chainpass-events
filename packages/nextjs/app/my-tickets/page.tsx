@@ -6,7 +6,7 @@ import TicketList from "~~/components/TicketList";
 const EventsPage: NextPage = () => {
   return (
     <>
-      <div className="text-center mt-4 w-8/12 mx-auto  p-10">
+      <div className="text-center mt-4 mx-8  py-10">
         <header className=" text-white p-4 mb-4">
           <h1 className="text-5xl  font-bold">My tickets</h1>
         </header>
