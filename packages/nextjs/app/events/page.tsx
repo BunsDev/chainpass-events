@@ -21,7 +21,7 @@ const EventsPage: NextPage = () => {
         <CreateEvent />
       </div>
 
-      <main className="mx-12 w-full">
+      <main className=" w-full">
         <IncomingEvents />
       </main>
     </>
