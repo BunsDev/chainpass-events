@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { EventModel } from "~~/models/event.model";
 import { useGlobalState } from "~~/services/store/store";
@@ -10,6 +11,9 @@ export const CreateEvent: React.FC = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [availableTickets, setAvailableTickets] = useState<number | "">("");
+
+  const [result, setResult] = useState("https://source.unsplash.com/random/400x400");
+  const [loading, setLoading] = useState(false);
 
   const handleCreateEvent = () => {
     if (title && description && availableTickets !== "") {
@@ -28,6 +32,36 @@ export const CreateEvent: React.FC = () => {
         setDescription("");
         setAvailableTickets("");
       } catch {}
+    }
+  };
+
+  const handleGeneration = async () => {
+    setLoading(true);
+    setResult(null);
+
+    try {
+      fetch("/api/generateImage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: description }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          setResult(data.image);
+          console.log(data);
+        })
+        .catch(error => {
+          console.error("Error generating image:", error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch (error) {
+      console.error("Error generating image:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,19 +120,23 @@ export const CreateEvent: React.FC = () => {
                 </button>
               </div>
             </form>
-            <div className="bg-zinc-100 flex-1 p-8 flex-col">
-              <div className="bg-zinc-300 rounded-md min-h-[80%]">
-                <Image src="/logogm2.jpeg" alt="Event" className="w-full" width={400} height={400} />
+            {loading ? (
+              <>Loading...</>
+            ) : (
+              <div className="bg-zinc-100 flex-1 p-8 flex-col">
+                <div className="bg-zinc-300 rounded-md min-h-[80%]">
+                  <img src={result} />
+                </div>
+                <div className="mt-8">
+                  <button
+                    className="text-sm  bg-secondary py-2 px-4 rounded-lg  font-semibold"
+                    onClick={() => handleGeneration()}
+                  >
+                    Generate new Image
+                  </button>
+                </div>
               </div>
-              <div className="mt-8">
-                <button
-                  className="text-sm  bg-secondary py-2 px-4 rounded-lg  font-semibold"
-                  onClick={() => alert("image generated")}
-                >
-                  Generate new Image
-                </button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       )}
