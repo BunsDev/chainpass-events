@@ -4,6 +4,9 @@
 
 body {
   min-height: 100vh;
+  background-image: url("/gradient.svg"), url("/stars.svg"), url("/gradient-2.svg");
+  background-repeat: no-repeat, repeat, no-repeat;
+  background-position: right top 300px, center center, left top;
 }
 
 h1,
@@ -16,24 +19,6 @@ h4 {
 
 p {
   margin: 1rem 0;
-}
-
-.bg-gradient-header {
-  background: linear-gradient(90.03deg, rgba(255, 255, 255, 0.1) 0.01%, rgba(255, 255, 255, 0) 158.84%);
-}
-
-.bg-gradient-conic {
-  background: conic-gradient(from 182.55deg at 50% 50%, #d7fc6e 0deg, #7905ed 145.8deg, #d7fc6e 360deg);
-}
-
-.bg-gradient-page {
-  background: black; /* Fondo negro */
-  background: radial-gradient(at top left, #7905ed 2%, transparent 20%),
-    radial-gradient(at bottom right, #d7fc6e 2%, transparent 40%),
-    radial-gradient(at right, #7905ed 2%, transparent 20%);
-  background-blend-mode: screen;
-  height: 100vh; /* Ajusta la altura del fondo */
-  margin: 0;
 }
 
 .border-dashed-lines {
