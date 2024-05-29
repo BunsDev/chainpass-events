@@ -23,21 +23,13 @@ p {
   margin: 1rem 0;
 }
 
-.btn {
-  @apply shadow-md;
-}
-
-.btn.btn-ghost {
-  @apply shadow-none;
-}
-
 .border-dashed-lines {
   position: relative;
   border: none;
 }
 .border-dashed-lines::before,
 .border-dashed-lines::after {
-  content: '';
+  content: "";
   position: absolute;
   width: calc(100% - 1rem);
   height: calc(100% - 1rem);
@@ -47,4 +39,18 @@ p {
   border: 2px dashed gray;
   border-radius: 0.5rem;
   pointer-events: none;
+}
+
+.underline-word {
+  position: relative;
+}
+
+.underline-word::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 150%;
+  height: 2px;
+  background-color: #b773fb;
 }

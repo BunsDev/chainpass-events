@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import Image from "next/image";
-import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { EventModel } from "~~/models/event.model";
 import { useGlobalState } from "~~/services/store/store";
@@ -37,7 +37,7 @@ export const CreateEvent: React.FC = () => {
 
   const handleGeneration = async () => {
     setLoading(true);
-    setResult(null);
+    setResult("");
 
     try {
       fetch("/api/generateImage", {
@@ -64,75 +64,77 @@ export const CreateEvent: React.FC = () => {
       setLoading(false);
     }
   };
+  console.log({ result });
 
   return (
     <div className="">
-      <button className="btn bg-secondary" onClick={() => setShowModal(true)}>
+      <button className="btn bg-green-500 text-lg" onClick={() => setShowModal(true)}>
+        <Image src={"/plus.svg"} alt="plus-image" width={"30"} height={"30"} />
         Create Event
       </button>
 
       {showModal && (
-        <div className="modal modal-open">
-          <div className="rounded-md min-w-[70%] bg-secondary  flex">
-            <form className="py-12 px-6 min-w-[55%]">
-              <h2 className="text-3xl font-bold mb-4">Create New Event</h2>
-              <div className="form-control mb-4">
-                <label className="label">
-                  <span className="label-text font-semibold   text-zinc-400 text-sm uppercase">Title</span>
-                </label>
+        <div className="fixed inset-0 z-50 overflow-auto flex justify-center items-center">
+          <div className="bg-black rounded-3xl w-full max-w-xl p-8 flex flex-col relative border border-zinc-300 border-1">
+            <button className="absolute top-4 right-4 text-sm text-zinc-400" onClick={() => setShowModal(false)}>
+              Cancel
+            </button>
+            <h2 className="text-center text-3xl font-bold mb-8 opacity-100">Create New Event</h2>
+            <form className="flex flex-col space-y-4">
+              <div className="flex flex-col">
+                <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Title</label>
                 <input
                   type="text"
-                  className="rounded-lg min-h-8 px-4 text-sm"
+                  className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 focus:ring-accent focus:border-accent"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   required
                 />
               </div>
-              <div className="form-control mb-4">
-                <label className="label">
-                  <span className="label-text font-semibold   text-zinc-400 text-sm uppercase">Description</span>
-                </label>
-                <textarea
-                  className=" rounded-lg px-4 py-4 text-sm"
-                  value={description}
-                  onChange={e => setDescription(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="form-control mb-4">
-                <label className="label">
-                  <span className="label-text font-semibold   text-zinc-400 text-sm uppercase">Available Items</span>
-                </label>
+              <div className="flex flex-col">
+                <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Available Tickets</label>
                 <input
                   type="number"
-                  className="rounded-lg min-h-8 text-sm px-4 "
+                  className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 focus:ring-accent focus:border-accent"
                   value={availableTickets}
                   onChange={e => setAvailableTickets(e.target.value ? Number(e.target.value) : "")}
                   required
                 />
               </div>
-              <div className="modal-action mt-12">
-                <button className=" text-sm mr-4" onClick={() => setShowModal(false)}>
-                  Cancel
-                </button>
-                <button className="text-sm  bg-accent py-2 px-4 rounded-lg  font-semibold " onClick={handleCreateEvent}>
-                  Create Event
-                </button>
+              <div className="flex flex-col">
+                <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Description</label>
+                <textarea
+                  className="rounded-3xl px-4 py-2 text-sm border border-zinc-300 focus:ring-accent focus:border-accent"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                  required
+                />
               </div>
+              <button
+                className="bg-green-500 text-white py-2 px-4 rounded-3xl font-semibold self-center"
+                onClick={handleCreateEvent}
+              >
+                Create Event
+              </button>
             </form>
             {loading ? (
-              <>Loading...</>
+              <div className="mt-8 text-center">Loading...</div>
             ) : (
-              <div className="bg-zinc-100 flex-1 p-8 flex-col">
-                <div className="bg-zinc-300 rounded-md min-h-[80%]">
-                  <img src={result} />
-                </div>
-                <div className="mt-8">
+              <div className="mt-8 flex flex-col space-y-4">
+                <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Image</label>
+                <div className="rounded-md border border-zinc-300 border-1 p-4 flex flex-col justify-center">
+                  <div className="rounded-md bg-zinc-300 h-64 flex justify-center align-center">
+                    {result.length ? (
+                      <img src={result} alt="Generated Image" className="w-full" />
+                    ) : (
+                      <Image src={"/upload-image.svg"} alt="plus-image" width={"60"} height={"60"} />
+                    )}
+                  </div>
                   <button
-                    className="text-sm  bg-secondary py-2 px-4 rounded-lg  font-semibold"
+                    className="bg-secondary text-white py-2 px-4 rounded-3xl font-semibold w-1/3 self-center mt-4"
                     onClick={() => handleGeneration()}
                   >
-                    Generate new Image
+                    Generate with IA
                   </button>
                 </div>
               </div>

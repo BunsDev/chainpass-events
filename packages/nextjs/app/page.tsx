@@ -10,8 +10,11 @@ const Home: NextPage = () => {
       <div className="flex items-center flex-col flex-grow pt-20 gap-2">
         <div className="px-5">
           <h1 className="text-center">
-            <span className="block text-lg mb-2">GET READY</span>
-            <span className="block text-5xl font-bold">Upcoming Events</span>
+            <span className="block text-md text-[#B773FB] mb-2">GET READY</span>
+            <div className="flex justify-center">
+              <span className="block text-5xl font-bold">Upcoming Events</span>
+              <Image alt="calendar" src={"/working.svg"} width={"70"} height={"70"} color={"white"} />
+            </div>
           </h1>
           <p className="text-center text-lg">
             Expand your knowlegde with like-minded.{" "}
@@ -21,8 +24,8 @@ const Home: NextPage = () => {
           </p>
         </div>
         <div className="w-1/2 border-dashed-lines flex flex-col items-center justify-center py-10">
-          <Image alt="calendar" src={"../public/calendar.svg"} width={"70"} height={"70"} color="white" />
-          <p className="text-white mb-4">There are no available events</p>
+          <Image alt="calendar" src={"/calendar.svg"} width={"70"} height={"70"} color={"white"} />
+          <p className="text-white text-lg mb-4">There are no available events</p>
           <CreateEvent />
         </div>
       </div>
