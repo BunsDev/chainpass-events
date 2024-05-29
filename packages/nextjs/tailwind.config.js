@@ -34,7 +34,7 @@ module.exports = {
           ".link": {
             textUnderlineOffset: "2px",
           },
-          "--bg-gradient": "linear-gradient(90.03deg, rgba(255, 255, 255, 0.1) 0.01%, rgba(255, 255, 255, 0) 158.84%)",
+          ".bg-gradient": "linear-gradient(90.03deg, rgba(255, 255, 255, 0.1) 0.01%, rgba(255, 255, 255, 0) 158.84%)",
         },
       },
       {
@@ -65,7 +65,7 @@ module.exports = {
           ".link": {
             textUnderlineOffset: "2px",
           },
-          "--bg-gradient": "linear-gradient(90.03deg, rgba(255, 255, 255, 0.1) 0.01%, rgba(255, 255, 255, 0) 158.84%)",
+          "bg-gradient": "linear-gradient(90.03deg, rgba(255, 255, 255, 0.1) 0.01%, rgba(255, 255, 255, 0) 158.84%)",
         },
       },
     ],
@@ -79,7 +79,7 @@ module.exports = {
         "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       backgroundImage: theme => ({
-        "gradient-bg": theme("colors.bg-gradient"),
+        "bg-gradient": theme("colors.bg-gradient"),
       }),
     },
   },
