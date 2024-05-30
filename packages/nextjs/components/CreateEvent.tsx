@@ -17,6 +17,8 @@ export const CreateEvent: React.FC = () => {
     "https://www.shutterstock.com/shutterstock/photos/1050259787/display_1500/stock-vector-ticket-icon-vector-line-raffle-ticket-symbol-trendy-flat-outline-ui-sign-design-thin-linear-1050259787.jpg",
   );
   const [loading, setLoading] = useState(false);
+  
+  showModal 
 
   const handleCreateEvent = () => {
     if (title && description && availableTickets !== "") {
