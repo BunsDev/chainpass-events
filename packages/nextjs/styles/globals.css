@@ -2,11 +2,21 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+:root,
+[data-theme] {
+  background: oklch(var(--b1));
+  color: oklch(var(--bc));
+}
+
 body {
   min-height: 100vh;
   background-image: url("/gradient.svg"), url("/stars.svg"), url("/gradient-2.svg");
   background-repeat: no-repeat, repeat, no-repeat;
   background-position: right top 300px, center center, left top;
+}
+
+body {
+  min-height: 100vh;
 }
 
 h1,
@@ -21,34 +31,10 @@ p {
   margin: 1rem 0;
 }
 
-.border-dashed-lines {
-  position: relative;
-  border: none;
-}
-.border-dashed-lines::before,
-.border-dashed-lines::after {
-  content: "";
-  position: absolute;
-  width: calc(100% - 1rem);
-  height: calc(100% - 1rem);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 2px dashed gray;
-  border-radius: 0.5rem;
-  pointer-events: none;
+.btn {
+  @apply shadow-md;
 }
 
-.underline-word {
-  position: relative;
-}
-
-.underline-word::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -5px;
-  width: 150%;
-  height: 2px;
-  background-color: #b773fb;
+.btn.btn-ghost {
+  @apply shadow-none;
 }

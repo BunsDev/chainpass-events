@@ -40,7 +40,7 @@ export const HeaderMenuLinks = () => {
           <li key={href} className={`${isActive ? "text-white" : ""}`}>
             <Link href={href} passHref className={"uppercase font-bold py-1.5 px-3 text-sm gap-2 grid grid-flow-col"}>
               {icon}
-              <span className={isActive ? "underline-word" : ""}>{label}</span>
+              <span>{label}</span>
             </Link>
           </li>
         );

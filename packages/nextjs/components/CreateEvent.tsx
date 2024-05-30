@@ -68,8 +68,7 @@ export const CreateEvent: React.FC = () => {
 
   return (
     <div className="">
-      <button className="btn bg-green-500 text-lg" onClick={() => setShowModal(true)}>
-        <Image src={"/plus.svg"} alt="plus-image" width={"30"} height={"30"} />
+      <button className="btn btn-primary" onClick={() => setShowModal(true)}>
         Create Event
       </button>
 

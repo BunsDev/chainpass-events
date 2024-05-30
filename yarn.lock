@@ -10068,6 +10068,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^0.379.0":
+  version: 0.379.0
+  resolution: "lucide-react@npm:0.379.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0
+  checksum: 89b8e768d81d63fd23af35f99ff2d970c824ea32ee09f1a169a1c9f1509d9527062357f30cd123786aa63af4bc9af4511cb9a05f226695145d3b2430c5477b55
+  languageName: node
+  linkType: hard
+
 "make-dir@npm:^3.1.0":
   version: 3.1.0
   resolution: "make-dir@npm:3.1.0"
@@ -12638,6 +12647,7 @@ __metadata:
     axios: ^1.7.2
     husky: ~8.0.3
     lint-staged: ~13.2.2
+    lucide-react: ^0.379.0
     next: ~14.0.4
     openai: ^4.47.1
     uuid: ^9.0.1
