@@ -10,7 +10,7 @@ const TicketList: React.FC = () => {
     const initialTickets: EventTicketProps[] = Array.from({ length: 4 }, (_, index) => ({
       id: index + 1,
       title: `Event Title ${index + 1}`,
-      description: `Description for event ${index + 1}`,
+      description: `Here’s goes a brief description of the event. Do not exceed the amount of characters.`,
       date: `2024-06-0${index + 1}`,
     }));
     setPurchasedTickets(initialTickets);
