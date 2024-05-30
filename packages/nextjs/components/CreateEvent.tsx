@@ -195,7 +195,7 @@ export const CreateEvent: React.FC = () => {
               <div className="flex flex-col flex-1 space-y-1">
                 <label className="text-sm text-left font-light">Image</label>
                 <div className="rounded-3xl border border-zinc-300 border-1 p-4 flex flex-col justify-center">
-                  <div className="rounded-md bg-zinc-300 h-64 flex justify-center align-center">
+                  <div className="rounded-md bg-zinc-300 h-64 flex justify-center align-center max-h-[170px]">
                     {result.length ? (
                       <img src={result} alt="Generated Image" className="w-full" />
                     ) : (
