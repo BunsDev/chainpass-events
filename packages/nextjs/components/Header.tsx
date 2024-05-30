@@ -34,7 +34,7 @@ export const HeaderMenuLinks = () => {
 
   return (
     <>
-      {menuLinks.map(({ label, href, icon }) => {
+      {menuLinks.map(({ label, href }) => {
         const isActive = pathname === href;
         return (
           <li key={href} className={` text-sm  ${isActive ? "border-b-2 border-secondary font-bold" : ""}`}>
@@ -86,7 +86,7 @@ export const Header = () => {
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">Tickets on Block</span>
+            <span className="font-bold leading-tight">ChainPass</span>
           </div>
         </Link>
       </div>
