@@ -37,9 +37,8 @@ export const HeaderMenuLinks = () => {
       {menuLinks.map(({ label, href, icon }) => {
         const isActive = pathname === href;
         return (
-          <li key={href} className={`${isActive ? "text-white" : ""}`}>
-            <Link href={href} passHref className={"uppercase font-bold py-1.5 px-3 text-sm gap-2 grid grid-flow-col"}>
-              {icon}
+          <li key={href} className={` text-sm  ${isActive ? "border-b-2 border-secondary font-bold" : ""}`}>
+            <Link className={`${isActive ? "bg-transparent" : ""} hover:bg-transparent`} href={href} passHref>
               <span>{label}</span>
             </Link>
           </li>

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import Image from "next/image";
+import clsx from "clsx";
 import { v4 as uuidv4 } from "uuid";
 import { EventModel } from "~~/models/event.model";
 import { useGlobalState } from "~~/services/store/store";
@@ -68,12 +68,11 @@ export const CreateEvent: React.FC = () => {
 
   return (
     <div className="">
-      <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+      <button className="btn btn-primary" onClick={() => document.getElementById("my_modal_2").showModal()}>
         Create Event
       </button>
 
-      {showModal && (
-        <div className="fixed inset-0 z-50 overflow-auto flex justify-center items-center">
+      {/*         <div className="fixed inset-0 z-50 overflow-auto flex justify-center items-center">
           <div className="bg-black rounded-3xl w-full max-w-xl p-8 flex flex-col relative border border-zinc-300 border-1">
             <button className="absolute top-4 right-4 text-sm text-zinc-400" onClick={() => setShowModal(false)}>
               Cancel
@@ -139,8 +138,52 @@ export const CreateEvent: React.FC = () => {
               </div>
             )}
           </div>
+        </div>  */}
+      <dialog id="my_modal_2" className={"modal"}>
+        <div className="modal-box backdrop-blur-xl">
+          <form className="flex flex-col space-y-4">
+            <h2>Create new event</h2>
+            <div className="flex flex-col">
+              <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Title</label>
+              <input
+                type="text"
+                className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 focus:ring-accent focus:border-accent"
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                required
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Available Tickets</label>
+              <input
+                type="number"
+                className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 focus:ring-accent focus:border-accent"
+                value={availableTickets}
+                onChange={e => setAvailableTickets(e.target.value ? Number(e.target.value) : "")}
+                required
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Description</label>
+              <textarea
+                className="rounded-3xl px-4 py-2 text-sm border border-zinc-300 focus:ring-accent focus:border-accent"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+                required
+              />
+            </div>
+            <div className="flex">
+              <button className="btn btn-primary font-normal" onClick={handleCreateEvent}>
+                Create Event
+              </button>
+              <button className="btn btn-neutral font-normal">Cancel</button>
+            </div>
+          </form>
         </div>
-      )}
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
     </div>
   );
 };
