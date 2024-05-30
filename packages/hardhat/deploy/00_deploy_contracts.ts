@@ -1,31 +1,25 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { ethers } from "hardhat";
-
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-
-  const eventTicketMinter = await deploy("EventTicketMinter", {
+  const eventTicketCollection = await deploy("Collection", {
     from: deployer,
     log: true,
   });
-
-  await deploy("EventTicketManager", {
+  await deploy("Minter", {
     from: deployer,
-    args: [eventTicketMinter.address],
+    args: [eventTicketCollection.address],
     log: true,
   });
-
-  const eventTicketMinterDeployed = await ethers.getContractAt("EventTicketMinter", eventTicketMinter.address);
-
+  const eventTicketCollectionDeployed = await ethers.getContractAt("Collection", eventTicketCollection.address);
   console.log(
     "Hello, contract name and owner: ",
-    await eventTicketMinterDeployed.name(),
-    await eventTicketMinterDeployed.owner(),
+    await eventTicketCollectionDeployed.name(),
+    await eventTicketCollectionDeployed.owner(),
   );
 };
-
 export default func;
 func.tags = ["EventTicketMinter", "EventTicketManager"];
