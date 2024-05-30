@@ -90,6 +90,11 @@ p {
   border: 1px solid white;
 }
 
+.card {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  border: 1px solid white;
+}
+
 .ticket {
   position: relative;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.36));

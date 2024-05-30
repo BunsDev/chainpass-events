@@ -1,14 +1,13 @@
 import React from "react";
 import { Event } from "./Event";
-import { useGlobalState } from "~~/services/store/store";
 
-export const IncomingEvents: React.FC = () => {
-  const { incomingEvents } = useGlobalState(state => ({
-    incomingEvents: state.incomingEvents,
-  }));
+interface iProps {
+  incomingEvents: any[];
+}
 
+export const IncomingEvents: React.FC<iProps> = ({ incomingEvents }: iProps) => {
   return (
-    <div className="my-12">
+    <div className="card w-96 glass">
       {incomingEvents.length === 0 ? (
         <div className="border-accent border-2 flex  justify-center  items-center mx-auto  bg-secondary max-w-64  min-h-48 rounded-xl">
           <p className=" text-zinc-500  font-light text-lg">No events available</p>

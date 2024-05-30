@@ -22,18 +22,18 @@ export const Event: React.FC<EventModel> = ({ id, title, description, imageUrl, 
   const [imgError, setImgError] = useState<boolean>(false);
 
   return (
-    <div className="card bg-base-100 shadow-xl rounded-2xl w-full border-2 border-secondary">
-      <figure>
-        <Image
-          src={imgError ? "/logogm2.jpeg" : imageUrl}
-          alt="Event"
-          className="w-full"
-          width={400}
-          height={400}
-          onError={() => setImgError(true)}
-        />
-      </figure>
-      <div className=" bg-secondary  p-4 rounded-b-2xl">
+    <div className="card backdrop-blur-xl">
+      <div className="card-body p-4 rounded-2xl">
+        <figure className="max-h-[125px] rounded-[10px]">
+          <Image
+            src={imgError ? "/logogm2.jpeg" : imageUrl}
+            alt="Event"
+            className="w-full"
+            width={400}
+            height={400}
+            onError={() => setImgError(true)}
+          />
+        </figure>
         <div className="text-left mb-4 spacing-y-2  text-sm">
           <h2 className="card-title mb-2 text-2xl">{title}</h2>
           <p>

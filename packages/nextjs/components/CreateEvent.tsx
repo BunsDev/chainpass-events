@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import Image from "next/image";
 import { CirclePlus } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { EventModel } from "~~/models/event.model";
@@ -71,7 +70,11 @@ export const CreateEvent: React.FC = () => {
 
   return (
     <div className="">
-      <button className="btn btn-primary" onClick={() => document.getElementById("my_modal_2").showModal()}>
+      <button
+        className="btn btn-primary  font-medium"
+        onClick={() => document.getElementById("my_modal_2").showModal()}
+      >
+        <CirclePlus size={24} />
         Create Event
       </button>
 
