@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
+
+import { IRouterClient } from "@chainlink/contracts-ccip/src/v0.8/ccip/interfaces/IRouterClient.sol";
+import { Client } from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.sol";
+import { LinkTokenInterface } from "@chainlink/contracts/src/v0.8/shared/interfaces/LinkTokenInterface.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Collection.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -23,11 +27,26 @@ contract Minter is Ownable {
     mapping(uint256 => Event) public events;
     uint256 public nextEventId;
     Collection public collection;
+    Collection public polygonCollection;
+	IRouterClient private s_router;
+	LinkTokenInterface private s_linkToken;
+
     event EventCreated(uint256 indexed eventId, string name, uint256 date, uint256 ticketSupply, string description);
-    event TicketClaimed(uint256 indexed eventId, address indexed user, uint256 tokenId);
-    constructor(address collectionAddress) {
-        collection = Collection(collectionAddress);
-    }
+    event TicketClaimed(uint256 indexed eventId, address indexed user, uint256 tokenId, bool isPolygon);
+    
+    constructor(
+		address collectionAddress,
+		address polygonMinter,
+		address _router,
+		address _link
+	) {
+		collection = Collection(collectionAddress);
+		collection = Collection(polygonCollectionAddress);
+		s_router = IRouterClient(_router);
+		s_linkToken = LinkTokenInterface(_link);
+		s_linkToken.approve(i_router, type(uint256).max);
+	}
+
     function createEvent(
         string memory name,
         uint256 date,
@@ -44,15 +63,53 @@ contract Minter is Ownable {
         collection.batchMint(address(this), ticketSupply, tokenUri);
         emit EventCreated(eventId, name, date, ticketSupply, description);
     }
-    function claimTicket(uint256 eventId) external {
-        Event storage eventInfo = events[eventId];
-        require(eventInfo.exists, "Event does not exist");
-        require(eventInfo.ticketsMinted < eventInfo.ticketSupply, "No more tickets available");
-        uint256 tokenId = eventInfo.tokenIdStartAt + eventInfo.ticketsMinted;
-        eventInfo.ticketsMinted++;
-        collection.transferFrom(address(this), msg.sender, tokenId);
-        emit TicketClaimed(eventId, msg.sender, tokenId);
-    }
+    function claimTicket(uint256 eventId, bool isPolygon) external {
+		Event storage eventInfo = events[eventId];
+		require(eventInfo.exists, "Event does not exist");
+		require(eventInfo.ticketsMinted < eventInfo.ticketSupply, "No more tickets available");
+
+		uint256 tokenId = eventInfo.ticketsMinted;
+		eventInfo.ticketsMinted++;
+
+		if (isPolygon) {
+			claimOnPolygon(16281711391670634445, msg.sender);
+			collection.burn(tokenId);
+		} else collection.transferFrom(address(this), msg.sender, tokenId);
+
+		emit TicketClaimed(eventId, msg.sender, tokenId, isPolygon);
+	}
+
+	function claimOnPolygon(uint64 destinationChainSelector, uint256 tokenId, address receiver) {
+		Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
+			receiver: abi.encode(receiver),
+			data: abi.encodeWithSignature("mint(address,uint256,string)", msg.sender, tokenId, collection.tokenURI(tokenId)),
+			tokenAmounts: new Client.EVMTokenAmount[](0),
+			extraArgs: "",
+			feeToken: payFeesIn == PayFeesIn.LINK ? i_link : address(0)
+		});
+
+		uint256 fee = IRouterClient(i_router).getFee(
+			destinationChainSelector,
+			message
+		);
+
+		bytes32 messageId;
+
+		if (payFeesIn == PayFeesIn.LINK) {
+			// LinkTokenInterface(i_link).approve(i_router, fee);
+			messageId = IRouterClient(i_router).ccipSend(
+				destinationChainSelector,
+				message
+			);
+		} else {
+			messageId = IRouterClient(i_router).ccipSend{ value: fee }(
+				destinationChainSelector,
+				message
+			);
+		}
+
+		emit MessageSent(messageId);
+	}
     function getEvent(uint256 eventId) external view returns (Event memory) {
         return events[eventId];
     }
