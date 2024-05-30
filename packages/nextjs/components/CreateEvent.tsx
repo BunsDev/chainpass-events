@@ -11,6 +11,7 @@ export const CreateEvent: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
   const [availableTickets, setAvailableTickets] = useState<number | "">("");
 
   const [result, setResult] = useState(
@@ -65,6 +66,7 @@ export const CreateEvent: React.FC = () => {
     setTitle("");
     setDescription("");
     setAvailableTickets("");
+    setDate("");
   };
 
   return (
@@ -106,8 +108,8 @@ export const CreateEvent: React.FC = () => {
                 <input
                   type="date"
                   className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 bg-white bg-opacity-10 "
-                  value={availableTickets}
-                  onChange={e => setAvailableTickets(e.target.value ? Number(e.target.value) : "")}
+                  value={date}
+                  onChange={e => setDate(e.target.value as string)}
                   required
                 />
               </div>
