@@ -7,14 +7,14 @@ import { CreateEvent } from "~~/components/CreateEvent";
 const Home: NextPage = () => {
   return (
     <>
-      <div className="text-center flex items-center flex-col flex-grow mt-20 gap-2  max-w-4xl mx-auto px-4 md:-px-0">
-        <div className="space-y-2">
+      <div className="text-center mt-20 max-w-4xl mx-auto px-4 md:-px-0">
+        <div className="">
           <span className="block text-md text-secondary">GET READY</span>
-          <h1 className="text-[52px] font-bold">
+          <h1 className="text-[52px] font-bold font-title">
             Upcoming Events <span>🔥</span>
           </h1>
         </div>
-        <p className="text-lg">
+        <p className="text-lg mt-8">
           Expand your knowlegde with like-minded.{" "}
           <span className=" text-lg font-bold">
             Check out the list of events below and sign up for the ones that interest you the most.

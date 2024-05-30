@@ -2,6 +2,56 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@layer base {
+  @font-face {
+    font-family: "Trap";
+    src: url("/fonts/Trap/Trap-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Trap";
+    src: url("/fonts/Trap/Trap-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Trap";
+    src: url("/fonts/Trap/Trap-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Trap";
+    src: url("/fonts/Trap/Trap-SemiBold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Trap";
+    src: url("/fonts/Trap/Trap-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Trap";
+    src: url("/fonts/Trap/Trap-ExtraBold.otf") format("opentype");
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Trap";
+    src: url("/fonts/Trap/Trap-Black.otf") format("opentype");
+    font-weight: 900;
+    font-style: normal;
+  }
+}
 :root,
 [data-theme] {
   background: oklch(var(--b1));

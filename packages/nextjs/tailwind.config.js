@@ -26,6 +26,9 @@ module.exports = {
   },
   theme: {
     extend: {
+      fontFamily: {
+        title: 'Trap'
+      },
       boxShadow: {
         center: "0 0 12px -2px rgb(0 0 0 / 0.05)",
       },
