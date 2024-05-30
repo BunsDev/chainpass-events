@@ -33,7 +33,7 @@ const Home: NextPage = () => {
         )}
         <>
           {incomingEvents?.length == 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 border-2 border-dashed rounded-3xl w-full mt-12 bg-gradient-to-r from-[rgba(241,241,241,0.08)] to-[rgba(7,7,7,0)]  backdrop-blur-xl ">
+            <div className="flex flex-col gap-4 items-center justify-center py-10 border-2 border-dashed rounded-3xl w-full mt-12 bg-gradient-to-r from-[rgba(241,241,241,0.08)] to-[rgba(7,7,7,0)]  backdrop-blur-xl ">
               <CalendarX size="70" />
               <CreateEvent />
               <p className="text-white text-lg">There are no available events</p>
