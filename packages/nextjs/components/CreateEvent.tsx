@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import clsx from "clsx";
+import Image from "next/image";
+import { CirclePlus } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { EventModel } from "~~/models/event.model";
 import { useGlobalState } from "~~/services/store/store";
@@ -142,41 +143,82 @@ export const CreateEvent: React.FC = () => {
       <dialog id="my_modal_2" className={"modal"}>
         <div className="modal-box backdrop-blur-xl">
           <form className="flex flex-col space-y-4">
-            <h2>Create new event</h2>
-            <div className="flex flex-col">
-              <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Title</label>
+            <div className="flex justify-center items-center">
+              <CirclePlus size={24} />
+              <h2 className=" text-2xl font-title font-bold m-0 p-0 ml-1">Create new event</h2>
+            </div>
+            <div className="flex flex-col space-y-1 ">
+              <label className="text-sm text-left font-light">Title</label>
               <input
                 type="text"
-                className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 focus:ring-accent focus:border-accent"
+                className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 bg-white bg-opacity-10 "
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 required
               />
             </div>
-            <div className="flex flex-col">
-              <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Available Tickets</label>
-              <input
-                type="number"
-                className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 focus:ring-accent focus:border-accent"
-                value={availableTickets}
-                onChange={e => setAvailableTickets(e.target.value ? Number(e.target.value) : "")}
-                required
-              />
+            <div className="flex">
+              <div className="flex flex-col flex-1 space-y-1 mr-4">
+                <label className="text-sm text-left font-light">Available Tickets</label>
+                <input
+                  type="number"
+                  className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 bg-white bg-opacity-10 "
+                  value={availableTickets}
+                  onChange={e => setAvailableTickets(e.target.value ? Number(e.target.value) : "")}
+                  required
+                />
+              </div>
+              <div className="flex flex-col flex-1 space-y-1">
+                <label className="text-sm text-left font-light">Date</label>
+                <input
+                  type="date"
+                  className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 bg-white bg-opacity-10 "
+                  value={availableTickets}
+                  onChange={e => setAvailableTickets(e.target.value ? Number(e.target.value) : "")}
+                  required
+                />
+              </div>
             </div>
-            <div className="flex flex-col">
-              <label className="text-zinc-400 text-sm uppercase font-semibold mb-1">Description</label>
+
+            <div className="flex flex-col flex-1 space-y-1">
+              <label className="text-sm text-left font-light">Description</label>
               <textarea
-                className="rounded-3xl px-4 py-2 text-sm border border-zinc-300 focus:ring-accent focus:border-accent"
+                className="rounded-3xl min-h-[100px] px-4 text-sm border border-zinc-300 bg-white bg-opacity-10"
                 value={description}
                 onChange={e => setDescription(e.target.value)}
                 required
               />
             </div>
-            <div className="flex">
-              <button className="btn btn-primary font-normal" onClick={handleCreateEvent}>
+            {loading ? (
+              <div className="mt-8 text-center">Loading...</div>
+            ) : (
+              <div className="flex flex-col flex-1 space-y-1">
+                <label className="text-sm text-left font-light">Image</label>
+                <div className="rounded-3xl border border-zinc-300 border-1 p-4 flex flex-col justify-center">
+                  <div className="rounded-md bg-zinc-300 h-64 flex justify-center align-center">
+                    {result.length ? (
+                      <img src={result} alt="Generated Image" className="w-full" />
+                    ) : (
+                      <Image src={"/upload-image.svg"} alt="plus-image" width={"60"} height={"60"} />
+                    )}
+                  </div>
+                  <button
+                    className="text-sm text-center mt-2 font-medium underline"
+                    /*          onClick={() => handleGeneration()} */
+                  >
+                    Generate with IA
+                  </button>
+                  <p className="text-xs text-center mt-1 font-regular">
+                    It will be generated based on your event description
+                  </p>
+                </div>
+              </div>
+            )}
+            <div className="flex w-[400px] mx-auto mt-6">
+              <button className="btn btn-neutral mr-1 font-normal flex-1 ">Cancel</button>
+              <button className="btn btn-primary font-normal flex-1" onClick={handleCreateEvent}>
                 Create Event
               </button>
-              <button className="btn btn-neutral font-normal">Cancel</button>
             </div>
           </form>
         </div>
