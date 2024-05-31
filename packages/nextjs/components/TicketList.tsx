@@ -1,24 +1,58 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import SeeEventsButton from "./SeeEventsButton";
 import { Ticket } from "lucide-react";
-import EventTicket, { EventTicketProps } from "~~/components/EventTicket";
+import EventTicket from "~~/components/EventTicket";
+import { notification } from "~~/utils/scaffold-eth";
+import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { EventModel } from "~~/models/event.model";
+import { useAccount } from "wagmi";
 
 const TicketList: React.FC = () => {
-  const [purchasedTickets, setPurchasedTickets] = useState<EventTicketProps[]>([]);
+  const [tickets, setTickets] = useState<EventModel[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const { data: minterContract, isLoading: isLoadingContract } = useScaffoldContract({
+    contractName: "Minter",
+  });
+
+  const { address } = useAccount();
+
+  const { data: totalTickets } = useScaffoldReadContract({
+    contractName: "Minter",
+    functionName: "getUserTickets",
+    args: [address],
+    watch: true,
+  });
 
   useEffect(() => {
-    const initialTickets: EventTicketProps[] = Array.from({ length: 4 }, (_, index) => ({
-      id: index + 1,
-      title: `Event Title ${index + 1}`,
-      description: `Here’s goes a brief description of the event. Do not exceed the amount of characters.`,
-      date: `2024-06-0${index + 1}`,
-    }));
-    setPurchasedTickets(initialTickets);
-  }, []);
+    const fetchTickets = async () => {
+      if(!isLoadingContract){
+        try {
+          setIsLoading(true)
+          const ticketsFetched = [];
+          if (totalTickets && totalTickets.length > 0) {
+            for (let i = 0; i < totalTickets.length; i++) {
+              ticketsFetched.push(await minterContract?.read.getEvent([BigInt(totalTickets[i].eventId)]));
+            }
+            setTickets(ticketsFetched as EventModel[]);
+          }
+        } catch (error: any) {
+          notification.error("Error fetching total events:", error);
+        } finally {
+          setIsLoading(false)
+        }
+      }
+    }
+    fetchTickets();
+  }, [totalTickets, isLoadingContract]);
+
+  if (isLoading || isLoadingContract) {
+    return <span className="loading loading-spinner text-secondary"></span>;
+  }
 
   return (
     <div className="w-full">
-      {purchasedTickets.length === 0 ? (
+      {tickets.length === 0 ? (
         <div className="text-center flex items-center flex-col justify-center gap-4">
           <div className="flex flex-col items-center justify-center py-10 border-2 border-dashed rounded-3xl w-1/2 mt-12 bg-gradient-to-r from-[rgba(241,241,241,0.08)] to-[rgba(7,7,7,0)] backdrop-blur-xl ">
             <Ticket width={80} height={80} />
@@ -30,8 +64,8 @@ const TicketList: React.FC = () => {
         <div className="flex flex-col justify-center gap-6 px-40">
           <SeeEventsButton />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {purchasedTickets.map(ticket => (
-              <EventTicket key={ticket.id} {...ticket} />
+            {tickets.map((ticket, index) => (
+              <EventTicket key={index} {...ticket} />
             ))}
           </div>
         </div>

@@ -1,52 +1,65 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import "tailwindcss/tailwind.css";
-import { v4 as uuidv4 } from "uuid";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { EventModel } from "~~/models/event.model";
-import { useGlobalState } from "~~/services/store/store";
+import { notification } from "~~/utils/scaffold-eth";
 
-export const Event: React.FC<EventModel> = ({ id, title, description, imageUrl, availableTickets }) => {
-  const { purchaseTicket } = useGlobalState(state => ({
-    purchaseTicket: state.purchaseTicket,
-  }));
+interface IEventProps {
+  event: EventModel;
+  eventId: number;
+}
 
-  const handlePurchaseTicket = (id: string) => {
-    try {
-      const ticketId = uuidv4();
-      // TODO: Connect to blockchain and mint token, if successful allow do local logic.
-
-      purchaseTicket(ticketId, id);
-    } catch {}
+export const Event: React.FC<IEventProps> = ({ event, eventId }) => {
+  const { name, ticketSupply, ticketsMinted, description } = event;
+  const { writeContractAsync, isSuccess, isPending } = useScaffoldWriteContract("Minter");
+3
+  const getAvailableTickets = () => {
+    return Number(ticketSupply) - Number(ticketsMinted);
   };
-
-  const [imgError, setImgError] = useState<boolean>(false);
+  const handlePurchaseTicket = async (id: number) => {
+    try {
+      await writeContractAsync({
+        functionName: "claimTicket",
+        args: [BigInt(id)],
+      });
+    } catch (error) {
+      notification.error("Something went wrong!");
+    } finally {
+      if(isSuccess){
+        notification.success("Ticket claimed!");
+      }
+    }
+  };
 
   return (
     <div className="card backdrop-blur-xl">
       <div className="card-body p-4 rounded-2xl">
         <figure className="max-h-[125px] rounded-[10px]">
           <Image
-            src={imgError ? "/logogm2.jpeg" : imageUrl}
+            src={"/logogm2.jpeg" }
             alt="Event"
             className="w-full"
             width={400}
             height={400}
-            onError={() => setImgError(true)}
           />
         </figure>
         <div className="text-left mb-4 spacing-y-2  text-sm">
-          <h2 className="card-title mb-2 text-2xl">{title}</h2>
+          <h2 className="card-title mb-2 text-2xl">{name}</h2>
           <p>
             <span className="opacity-70">Description:</span> {description}
           </p>
           <p>
-            <span className="opacity-70">Available Tickets:</span> {availableTickets}
+            <span className="opacity-70">Available Tickets:</span> {getAvailableTickets()}
           </p>
         </div>
 
         <div className="card-actions justify-end mt-4">
-          <button className="btn btn-primary" onClick={() => handlePurchaseTicket(id)}>
-            Get Your Ticket
+        <button
+            className="btn btn-primary"
+            disabled={isPending || getAvailableTickets() === 0}
+            onClick={() => handlePurchaseTicket(eventId)}
+          >   Get Your Ticket
           </button>
         </div>
       </div>

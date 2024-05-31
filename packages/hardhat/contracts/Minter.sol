@@ -23,6 +23,7 @@ contract Minter is Ownable {
         uint256 tokenId;
         uint256 eventId;
     }
+    
     mapping(uint256 => Event) public events;
     uint256 public nextEventId;
     Collection public collection;
@@ -97,10 +98,12 @@ contract Minter is Ownable {
     function getEvent(uint256 eventId) external view returns (Event memory) {
         return events[eventId];
     }
+
     function getTotalEvents() external view returns (uint256) {
         return nextEventId;
     }
-    //TO DO: Improve this logic
+
+    //TO DO: Improve this logic because it's not possible using BC
     function getUserTickets(address walletOwner) external view returns (TicketInfo[] memory) {
         uint256 totalTokens = collection.getTotalCollection();
         uint256[] memory userTokenIds = new uint256[](totalTokens);

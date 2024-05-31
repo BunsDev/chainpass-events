@@ -41,7 +41,7 @@ contract Collection is ERC721URIStorage, Ownable {
         _setTokenURI(tokenId, tokenUri);
         _nextTokenId++;
     }
-
+    
     function getTotalCollection() external view returns (uint256) {
         return _nextTokenId;
     }

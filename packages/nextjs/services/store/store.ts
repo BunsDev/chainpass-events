@@ -1,6 +1,6 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
-import { EventModel } from "~~/models/event.model";
+import { EventModelForStore } from "~~/models/event.model";
 import { TicketModel } from "~~/models/ticket.model";
 import scaffoldConfig from "~~/scaffold.config";
 import { ChainWithAttributes } from "~~/utils/scaffold-eth";
@@ -10,8 +10,8 @@ type GlobalState = {
   setNativeCurrencyPrice: (newNativeCurrencyPriceState: number) => void;
   targetNetwork: ChainWithAttributes;
   setTargetNetwork: (newTargetNetwork: ChainWithAttributes) => void;
-  incomingEvents: EventModel[];
-  addEvent: (newEvent: EventModel) => void;
+  incomingEvents: EventModelForStore[];
+  addEvent: (newEvent: EventModelForStore) => void;
   purchasedTickets: TicketModel[];
   purchaseTicket: (ticketId: string, eventId: string) => void;
 };
@@ -25,7 +25,8 @@ export const useGlobalState = create<GlobalState>()(
       setTargetNetwork: (newTargetNetwork: ChainWithAttributes) => set(() => ({ targetNetwork: newTargetNetwork })),
       incomingEvents: [],
       myTickets: [],
-      addEvent: (newEvent: EventModel): void => set(state => ({ incomingEvents: [...state.incomingEvents, newEvent] })),
+      addEvent: (newEvent: EventModelForStore): void =>
+        set(state => ({ incomingEvents: [...state.incomingEvents, newEvent] })),
       purchasedTickets: [],
 
       purchaseTicket: (ticketId: string, eventId: string): void => {
