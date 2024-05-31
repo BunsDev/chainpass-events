@@ -50,14 +50,12 @@
     "node": ">=18.17.0"
   },
   "dependencies": {
-<<<<<<< Updated upstream
+    "@chainlink/contracts": "^1.1.1",
+    "@chainlink/contracts-ccip": "^1.4.0",
     "axios": "^1.7.2",
     "lucide": "^0.381.0",
     "lucide-react": "^0.379.0",
     "openai": "^4.47.1",
-=======
-    "@chainlink/contracts-ccip": "^1.4.0",
->>>>>>> Stashed changes
     "uuid": "^9.0.1"
   }
 }

@@ -6,8 +6,7 @@ import { Client } from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client
 import { LinkTokenInterface } from "@chainlink/contracts/src/v0.8/shared/interfaces/LinkTokenInterface.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Collection.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "./Collection.sol";
+
 contract Minter is Ownable {
     struct Event {
         string name;
@@ -27,7 +26,7 @@ contract Minter is Ownable {
     mapping(uint256 => Event) public events;
     uint256 public nextEventId;
     Collection public collection;
-    Collection public polygonCollection;
+    address public destinationMinter;
 	IRouterClient private s_router;
 	LinkTokenInterface private s_linkToken;
 
@@ -41,10 +40,10 @@ contract Minter is Ownable {
 		address _link
 	) {
 		collection = Collection(collectionAddress);
-		collection = Collection(polygonCollectionAddress);
+        destinationMinter = polygonMinter;
 		s_router = IRouterClient(_router);
 		s_linkToken = LinkTokenInterface(_link);
-		s_linkToken.approve(i_router, type(uint256).max);
+		s_linkToken.approve(_router, type(uint256).max);
 	}
 
     function createEvent(
@@ -63,6 +62,7 @@ contract Minter is Ownable {
         collection.batchMint(address(this), ticketSupply, tokenUri);
         emit EventCreated(eventId, name, date, ticketSupply, description);
     }
+    
     function claimTicket(uint256 eventId, bool isPolygon) external {
 		Event storage eventInfo = events[eventId];
 		require(eventInfo.exists, "Event does not exist");
@@ -72,43 +72,27 @@ contract Minter is Ownable {
 		eventInfo.ticketsMinted++;
 
 		if (isPolygon) {
-			claimOnPolygon(16281711391670634445, msg.sender);
+			claimOnPolygon(tokenId, destinationMinter);
 			collection.burn(tokenId);
 		} else collection.transferFrom(address(this), msg.sender, tokenId);
 
 		emit TicketClaimed(eventId, msg.sender, tokenId, isPolygon);
 	}
 
-	function claimOnPolygon(uint64 destinationChainSelector, uint256 tokenId, address receiver) {
+	function claimOnPolygon(uint256 tokenId, address receiver) private {
 		Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
 			receiver: abi.encode(receiver),
 			data: abi.encodeWithSignature("mint(address,uint256,string)", msg.sender, tokenId, collection.tokenURI(tokenId)),
 			tokenAmounts: new Client.EVMTokenAmount[](0),
 			extraArgs: "",
-			feeToken: payFeesIn == PayFeesIn.LINK ? i_link : address(0)
+			feeToken: address(s_linkToken)
 		});
-
-		uint256 fee = IRouterClient(i_router).getFee(
-			destinationChainSelector,
-			message
-		);
-
 		bytes32 messageId;
 
-		if (payFeesIn == PayFeesIn.LINK) {
-			// LinkTokenInterface(i_link).approve(i_router, fee);
-			messageId = IRouterClient(i_router).ccipSend(
-				destinationChainSelector,
-				message
-			);
-		} else {
-			messageId = IRouterClient(i_router).ccipSend{ value: fee }(
-				destinationChainSelector,
-				message
-			);
-		}
-
-		emit MessageSent(messageId);
+        messageId = IRouterClient(s_router).ccipSend(
+            16281711391670634445,
+            message
+        );
 	}
     function getEvent(uint256 eventId) external view returns (Event memory) {
         return events[eventId];
