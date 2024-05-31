@@ -11,13 +11,13 @@ import { useAccount } from "wagmi";
 const TicketList: React.FC = () => {
   const [tickets, setTickets] = useState<EventModel[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { data: minterContract } = useScaffoldContract({
+  const { data: minterContract, isLoading: isLoadingContract } = useScaffoldContract({
     contractName: "Minter",
   });
 
   const { address } = useAccount();
 
-  const { data: totalTickets, isSuccess } = useScaffoldReadContract({
+  const { data: totalTickets } = useScaffoldReadContract({
     contractName: "Minter",
     functionName: "getUserTickets",
     args: [address],
@@ -26,6 +26,7 @@ const TicketList: React.FC = () => {
 
   useEffect(() => {
     const fetchTickets = async () => {
+      if(!isLoadingContract){
         try {
           setIsLoading(true)
           const ticketsFetched = [];
@@ -40,11 +41,12 @@ const TicketList: React.FC = () => {
         } finally {
           setIsLoading(false)
         }
+      }
     }
     fetchTickets();
-  }, [totalTickets, isSuccess]);
+  }, [totalTickets, isLoadingContract]);
 
-  if (isLoading || !isSuccess) {
+  if (isLoading || isLoadingContract) {
     return <span className="loading loading-spinner text-secondary"></span>;
   }
 

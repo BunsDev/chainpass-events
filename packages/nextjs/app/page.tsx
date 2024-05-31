@@ -16,7 +16,7 @@ const Home: NextPage = () => {
     contractName: "Minter",
   });
 
-  const { data: totalEvents } = useScaffoldReadContract({
+  const { data: totalEvents} = useScaffoldReadContract({
     contractName: "Minter",
     functionName: "getTotalEvents",
     watch: true,
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
     }
     fetchData();
 
-  }, [totalEvents]);
+  }, [totalEvents, isLoading]);
 
 
   return (
