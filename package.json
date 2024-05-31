@@ -12,6 +12,8 @@
     "chain": "yarn workspace @se-2/hardhat chain",
     "compile": "yarn workspace @se-2/hardhat compile",
     "deploy": "yarn workspace @se-2/hardhat deploy",
+    "deploy-amoy": "yarn workspace @se-2/hardhat deploy --deploy-scripts $(pwd)/packages/hardhat/deploy_polygon --network polygonAmoy",
+    "deploy-sepolia": "yarn workspace @se-2/hardhat deploy --deploy-scripts $(pwd)/packages/hardhat/deploy --network sepolia",
     "flatten": "yarn workspace @se-2/hardhat flatten",
     "fork": "yarn workspace @se-2/hardhat fork",
     "format": "yarn next:format && yarn hardhat:format",
