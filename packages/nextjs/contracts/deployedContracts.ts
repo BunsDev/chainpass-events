@@ -476,7 +476,7 @@ const deployedContracts = {
       },
     },
     Minter: {
-      address: "0x2751228A94E0276947c9e13AD885aa95aB776CEb",
+      address: "0xf5D4e21e5bBDd0D9809ec29a0BA51117a4C875d1",
       abi: [
         {
           inputs: [

@@ -4,6 +4,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Collection.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Collection.sol";
+
 contract Minter is Ownable {
     struct Event {
         string name;

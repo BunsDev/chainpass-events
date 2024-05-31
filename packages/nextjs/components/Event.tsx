@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import "tailwindcss/tailwind.css";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
