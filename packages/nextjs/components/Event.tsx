@@ -25,15 +25,12 @@ export const Event: React.FC<IEventProps> = ({ event, eventId }) => {
       });
     } catch (error) {
       notification.error("Something went wrong!");
+    } finally {
+      if(isSuccess){
+        notification.success("Ticket claimed!");
+      }
     }
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      notification.success("Ticket claimed!");
-      event.ticketsMinted++;
-    }
-  }, [isSuccess]);
 
   return (
     <div className="card backdrop-blur-xl">
