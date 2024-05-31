@@ -21,14 +21,17 @@ contract Minter is Ownable {
         uint256 tokenId;
         uint256 eventId;
     }
+    
     mapping(uint256 => Event) public events;
     uint256 public nextEventId;
     Collection public collection;
+
     event EventCreated(uint256 indexed eventId, string name, uint256 date, uint256 ticketSupply, string description);
     event TicketClaimed(uint256 indexed eventId, address indexed user, uint256 tokenId);
     constructor(address collectionAddress) {
         collection = Collection(collectionAddress);
     }
+
     function createEvent(
         string memory name,
         uint256 date,
@@ -45,6 +48,7 @@ contract Minter is Ownable {
         collection.batchMint(address(this), ticketSupply, tokenUri);
         emit EventCreated(eventId, name, date, ticketSupply, description);
     }
+
     function claimTicket(uint256 eventId) external {
         Event storage eventInfo = events[eventId];
         require(eventInfo.exists, "Event does not exist");
@@ -54,13 +58,16 @@ contract Minter is Ownable {
         collection.transferFrom(address(this), msg.sender, tokenId);
         emit TicketClaimed(eventId, msg.sender, tokenId);
     }
+
     function getEvent(uint256 eventId) external view returns (Event memory) {
         return events[eventId];
     }
+
     function getTotalEvents() external view returns (uint256) {
         return nextEventId;
     }
-    //TO DO: Improve this logic
+
+    //TO DO: Improve this logic because it's not possible using BC
     function getUserTickets(address walletOwner) external view returns (TicketInfo[] memory) {
         uint256 totalTokens = collection.getTotalCollection();
         uint256[] memory userTokenIds = new uint256[](totalTokens);
