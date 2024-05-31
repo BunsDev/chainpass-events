@@ -1,39 +1,59 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { CirclePlus } from "lucide-react";
-import { v4 as uuidv4 } from "uuid";
-import { EventModel } from "~~/models/event.model";
-import { useGlobalState } from "~~/services/store/store";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { notification } from "~~/utils/scaffold-eth";
 
 export const CreateEvent: React.FC = () => {
-  const createEvent = useGlobalState(state => state.addEvent);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [availableTickets, setAvailableTickets] = useState<number | "">("");
+  const [date, setDate] = useState("");
+  const [timestamp, setTimestamp] = useState<number>(0);
   const modalRef = useRef<HTMLDialogElement>(null);
-
 
   const [result, setResult] = useState("https://source.unsplash.com/random/400x400");
   const [loading, setLoading] = useState(false);
 
-  const handleCreateEvent = () => {
-    if (title && description && availableTickets !== "") {
+  const { writeContractAsync: writeYourContractAsync, isSuccess } = useScaffoldWriteContract("Minter");
+
+  const handleCreateEvent = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (title && description && availableTickets !== "" && timestamp != 0) {
+      setLoading(true);
       try {
-        // TODO: Connect to blockchain to create Event, if successful allow do local logic.
-        const newEvent: EventModel = {
-          id: uuidv4(),
-          title,
-          description,
-          imageUrl: "https://source.unsplash.com/random/400x400",
-          availableTickets: Number(availableTickets),
-        };
-        createEvent(newEvent);
-        setTitle("");
-        setDescription("");
-        setAvailableTickets("");
-      } catch {}
+        // TO DO: pass to createEvent a tokenUri and imageUrl
+        await writeYourContractAsync({
+          functionName: "createEvent",
+          args: [title, BigInt(timestamp), BigInt(availableTickets), description, "tokenUri", "imageUrl"],
+        });
+      } catch {
+        notification.error("Something went bad!");
+      } finally {
+        if(isSuccess){
+          notification.success("Event Created!");
+          setTitle("");
+          setDescription("");
+          setAvailableTickets("");
+          setDate("");
+          setTimestamp(0);
+        }
+        handleCancel();
+      }
     }
+  };
+
+  const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = e.target.value;
+    setDate(selectedDate);
+    const dateTimestamp = Date.parse(selectedDate);
+    setTimestamp(dateTimestamp);
+  };
+
+  const handleCancel = () => {
+    setLoading(false);
+    modalRef.current?.close();
   };
 
   const handleGeneration = async () => {
@@ -173,8 +193,8 @@ export const CreateEvent: React.FC = () => {
                 <input
                   type="date"
                   className="rounded-3xl min-h-8 px-4 text-sm border border-zinc-300 bg-white bg-opacity-10 "
-                  value={availableTickets}
-                  onChange={e => setAvailableTickets(e.target.value ? Number(e.target.value) : "")}
+                  value={date}
+                  onChange={handleChangeDate}
                   required
                 />
               </div>
@@ -214,11 +234,28 @@ export const CreateEvent: React.FC = () => {
                 </div>
               </div>
             )}
-            <div className="flex w-[400px] mx-auto mt-6">
-              <button className="btn btn-neutral mr-1 font-normal flex-1 ">Cancel</button>
-              <button className="btn btn-primary font-normal flex-1" onClick={handleCreateEvent}>
-                Create Event
-              </button>
+            <div>
+              {loading ? (
+                <div className="flex w-[400px] mx-auto mt-6">
+                  {" "}
+                  <button className="btn btn-neutral mr-1 font-normal flex-1 ">
+                    <span className="loading loading-spinner"></span>
+                  </button>
+                  <button className="btn btn-primary font-normal flex-1">
+                    <span className="loading loading-spinner"></span>
+                  </button>{" "}
+                </div>
+              ) : (
+                <div className="flex w-[400px] mx-auto mt-6">
+                  {" "}
+                  <button className="btn btn-neutral mr-1 font-normal flex-1 " onClick={handleCancel}>
+                    Cancel
+                  </button>
+                  <button className="btn btn-primary font-normal flex-1" onClick={e => handleCreateEvent(e)}>
+                    Create Event
+                  </button>
+                </div>
+              )}
             </div>
           </form>
         </div>
