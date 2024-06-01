@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import type { NextPage } from "next";
 import HomeCard from "~~/components/HomeCard";
 import ProductPlan from "~~/components/ProductPlan";
+import { CTAHome } from "~~/components/CTAHome";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -67,6 +68,8 @@ const Home: NextPage = () => {
           <div className=" space-x-4" id="roadmap">
             <ProductPlan/>
           </div>
+
+          <CTAHome/>
         </main>
       </div>
     </>
