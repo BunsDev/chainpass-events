@@ -18,7 +18,7 @@ const ProductCard = ({ descriptionOne, descriptionTwo, title }: ProductCardProps
         <div className="card-title">
           <p>{title}</p>
         </div>
-        <ul>
+        <ul className="gap-2">
           <li>
             <p>{descriptionOne}</p>
           </li>
