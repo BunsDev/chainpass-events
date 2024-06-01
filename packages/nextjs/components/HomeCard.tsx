@@ -8,10 +8,10 @@ interface HomeCardProps {
 
 const HomeCard = ({ icon, title, description }: HomeCardProps) => {
   return (
-    <div className="card w-96 shadow-xl p-4 transform transition-transform duration-300 hover:scale-105" >
+    <div className="card w-96 shadow-xl p-4 transform transition-transform duration-300 hover:scale-105">
       <div className="text-start card-body space-y-2">
-      <div className="flex flex-col items-start">
-          <figure >
+        <div className="flex flex-col items-start">
+          <figure>
             <Image src={icon} alt="Icon" width={60} height={60} className="w-full h-full object-contain" />
           </figure>
         </div>

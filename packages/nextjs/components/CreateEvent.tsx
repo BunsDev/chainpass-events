@@ -31,7 +31,7 @@ export const CreateEvent: React.FC = () => {
       } catch {
         notification.error("Something went bad!");
       } finally {
-        if(isSuccess){
+        if (isSuccess) {
           notification.success("Event Created!");
           setTitle("");
           setDescription("");

@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
+import { Head } from "next/document";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
-import Image from "next/image";
-import { Head } from "next/document";
 
 type HeaderMenuLink = {
   label: string;
@@ -16,10 +16,10 @@ type HeaderMenuLink = {
 };
 
 type DefaultMenu = {
-  menuLinks: HeaderMenuLink[]
-}
+  menuLinks: HeaderMenuLink[];
+};
 
-const homeMenuLinks : HeaderMenuLink[]= [
+const homeMenuLinks: HeaderMenuLink[] = [
   {
     label: "Key Benefits",
     href: "/#keybenefits",
@@ -82,7 +82,7 @@ export const Header = () => {
     useCallback(() => setIsDrawerOpen(false), []),
   );
 
-  const menuLinks = pathname === '/' ? homeMenuLinks : defaultMenuLinks;
+  const menuLinks = pathname === "/" ? homeMenuLinks : defaultMenuLinks;
 
   return (
     <div className="sticky bg-gradient-header lg:static top-0 navbar min-h-0 border-b-2 border-zinc-900 flex-shrink-0 justify-between z-20 px-0 sm:px-2  bg-gradient-to-r from-[rgba(255,255,255,.1)] to-[rgba(255,255,255,0)]  backdrop-blur-[5px]">

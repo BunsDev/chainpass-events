@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { CalendarX } from "lucide-react";
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
 import { CreateEvent } from "~~/components/CreateEvent";
 import { Event } from "~~/components/Event";
 import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
@@ -11,12 +11,12 @@ import { notification } from "~~/utils/scaffold-eth";
 
 const Home: NextPage = () => {
   const [events, setEvents] = useState<EventModel[]>([]);
-  const [isFetchingEvents, setIsFetchingEvents] = useState<boolean>(false)
+  const [isFetchingEvents, setIsFetchingEvents] = useState<boolean>(false);
   const { data: minterContract, isLoading } = useScaffoldContract({
     contractName: "Minter",
   });
 
-  const { data: totalEvents} = useScaffoldReadContract({
+  const { data: totalEvents } = useScaffoldReadContract({
     contractName: "Minter",
     functionName: "getTotalEvents",
     watch: true,
@@ -24,8 +24,8 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsFetchingEvents(true)
-        if(!isLoading){
+      setIsFetchingEvents(true);
+      if (!isLoading) {
         try {
           const eventsFetched = [];
           if (totalEvents && totalEvents > 0) {
@@ -37,13 +37,11 @@ const Home: NextPage = () => {
         } catch (error: any) {
           notification.error("Error fetching total events:", error);
         }
-        }
-      setIsFetchingEvents(false)
-    }
+      }
+      setIsFetchingEvents(false);
+    };
     fetchData();
-
   }, [totalEvents, isLoading]);
-
 
   return (
     <>
@@ -60,7 +58,7 @@ const Home: NextPage = () => {
             Check out the list of events below and sign up for the ones that interest you the most.
           </span>
         </p>
-        
+
         {isFetchingEvents || isLoading ? (
           <div className="flex justify-center items-center mt-12">
             <span className="loading loading-spinner loading-lg"></span>

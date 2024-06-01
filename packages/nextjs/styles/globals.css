@@ -129,7 +129,7 @@ p {
   border-radius: 10%;
 }
 
-.card{
+.card {
   background: linear-gradient(137.6deg, rgba(248, 248, 255, 0.1) 1.58%, rgba(248, 248, 255, 0) 103.38%);
 }
 
@@ -137,12 +137,12 @@ p {
   @apply shadow-none;
 }
 
-.animate-cube-spin{
+.animate-cube-spin {
   animation: spin 10s linear infinite;
 }
 
 .timeline-color-unchecked {
-  background: #F8F8FF4D;
+  background: #f8f8ff4d;
 }
 
 @layer base {

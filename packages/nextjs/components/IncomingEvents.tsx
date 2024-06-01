@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Event } from "./Event";
-import { EventModel } from "~~/models/event.model";
 import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { EventModel } from "~~/models/event.model";
 import { notification } from "~~/utils/scaffold-eth";
 
 export const IncomingEvents: React.FC = () => {
@@ -36,8 +36,8 @@ export const IncomingEvents: React.FC = () => {
     fetchData();
   }, [totalEvents, isLoading, minterContract?.read]);
 
-  console.log(events)
-  
+  console.log(events);
+
   return (
     <div className="card w-96 glass">
       {events.length === 0 ? (
@@ -46,7 +46,7 @@ export const IncomingEvents: React.FC = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-3 gap-4">
-            {events.map((event, index) => (
+          {events.map((event, index) => (
             <Event key={index} eventId={index} event={event} />
           ))}
         </div>
