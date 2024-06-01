@@ -21,14 +21,14 @@ const ProductPlan = () => {
           />
         </div>
         <div className="timeline-middle">
-          <Image src={"home/circle-checked.svg"} width={33} height={33} alt="circle-checked"></Image>
+          <Image src={"/home/circle-uncheck.svg"} width={33} height={33} alt="circle-checked"></Image>
         </div>
         <hr className="timeline-color-unchecked" />
       </li>
       <li>
         <hr className="timeline-color-unchecked" />
         <div className="timeline-middle">
-          <Image src={"home/circle-unchecked.svg"} width={33} height={33} alt="circle-checked"></Image>
+          <Image src={"/home/circle-check.svg"} width={33} height={33} alt="circle-checked"></Image>
         </div>
         <div className="timeline-end timeline-box">
           <ProductCard
@@ -50,7 +50,7 @@ const ProductPlan = () => {
           />
         </div>
         <div className="timeline-middle">
-          <Image src={"home/circle-unchecked.svg"} width={33} height={33} alt="circle-checked"></Image>
+          <Image src={"/home/circle-check.svg"} width={33} height={33} alt="circle-checked"></Image>
         </div>
         <hr className="timeline-color-unchecked" />
       </li>
@@ -58,7 +58,7 @@ const ProductPlan = () => {
         <hr className="timeline-color-unchecked" />
 
         <div className="timeline-middle">
-          <Image src={"home/circle-unchecked.svg"} width={33} height={33} alt="circle-checked"></Image>
+          <Image src={"/home/circle-check.svg"} width={33} height={33} alt="circle-checked"></Image>
         </div>
         <div className="timeline-end timeline-box">
           {" "}
