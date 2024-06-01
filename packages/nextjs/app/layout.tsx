@@ -11,8 +11,8 @@ const work_sans = Work_Sans({
 });
 
 export const metadata = getMetadata({
-  title: "Tickets on Blockchain",
-  description: "Built with 🏗 Scaffold-ETH 2",
+  title: "Chain Pass",
+  description: "Organize and enjoy your events!",
 });
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
