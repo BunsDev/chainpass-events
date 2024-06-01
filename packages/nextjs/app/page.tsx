@@ -1,94 +1,76 @@
 "use client";
 
-import { CalendarX } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
-import { CreateEvent } from "~~/components/CreateEvent";
-import { Event } from "~~/components/Event";
-import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { EventModel } from "~~/models/event.model";
-import { notification } from "~~/utils/scaffold-eth";
+import { CTAHome } from "~~/components/CTAHome";
+import HomeCard from "~~/components/HomeCard";
+import ProductPlan from "~~/components/ProductPlan";
 
 const Home: NextPage = () => {
-  const [events, setEvents] = useState<EventModel[]>([]);
-  const [isFetchingEvents, setIsFetchingEvents] = useState<boolean>(false)
-  const { data: minterContract, isLoading } = useScaffoldContract({
-    contractName: "Minter",
-  });
-
-  const { data: totalEvents} = useScaffoldReadContract({
-    contractName: "Minter",
-    functionName: "getTotalEvents",
-    watch: true,
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsFetchingEvents(true)
-        if(!isLoading){
-        try {
-          const eventsFetched = [];
-          if (totalEvents && totalEvents > 0) {
-            for (let i = 0; i < totalEvents; i++) {
-              eventsFetched.push(await minterContract?.read.getEvent([BigInt(i)]));
-            }
-            setEvents(eventsFetched as EventModel[]);
-          }
-        } catch (error: any) {
-          notification.error("Error fetching total events:", error);
-        }
-        }
-      setIsFetchingEvents(false)
-    }
-    fetchData();
-
-  }, [totalEvents, isLoading]);
-
+  const router = useRouter();
 
   return (
     <>
       <div className="text-center mt-20 max-w-4xl mx-auto px-4 md:-px-0">
-        <div className="">
-          <span className="block text-md text-secondary">GET READY</span>
-          <h1 className="text-[52px] font-bold font-title">
-            Upcoming Events <span>🔥</span>
-          </h1>
-        </div>
-        <p className="text-lg mt-8">
-          Expand your knowlegde with like-minded.{" "}
-          <span className=" text-lg font-bold">
-            Check out the list of events below and sign up for the ones that interest you the most.
-          </span>
-        </p>
-        
-        {isFetchingEvents || isLoading ? (
-          <div className="flex justify-center items-center mt-12">
-            <span className="loading loading-spinner loading-lg"></span>
+        <main className="flex flex-col items-center justify-center text-center px-4 py-16 space-y-12 gap-24">
+          <div className="space-y-8">
+            <h1 className="text-6xl font-bold">
+              The Next-Gen{" "}
+              <span className="inline-block align-middle animate-cube-spin ">
+                <Image src="/home/title-cube.svg" alt="Cube" width={54} height={63} />
+              </span>{" "}
+              DApp for Seamless Event Ticketing
+            </h1>
+            <p className="text-md">
+              An innovative, <span className="font-semibold">decentralized platform</span> designed to revolutionize the
+              way organizers and attendees manage event tickets
+            </p>
+            <div className="flex w-[400px] mx-auto mt-6">
+              <button className="btn btn-neutral mr-1 font-normal flex-1 " onClick={() => router.push("/events")}>
+                Events
+              </button>
+              <button className="btn btn-primary font-normal flex-1" onClick={() => router.push("/my-tickets")}>
+                My Tickets
+              </button>
+            </div>
           </div>
-        ) : (
-          <>
-            {events && events?.length !== 0 && (
-              <div className="mt-6">
-                <CreateEvent />
-              </div>
-            )}
-            <>
-              {events && events.length === 0 ? (
-                <div className="flex flex-col gap-4 items-center justify-center py-10 border-2 border-dashed rounded-3xl w-full mt-12 bg-gradient-to-r from-[rgba(241,241,241,0.08)] to-[rgba(7,7,7,0)] backdrop-blur-xl ">
-                  <CalendarX size="70" />
-                  <CreateEvent />
-                  <p className="text-white text-lg">There are no available events</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-3 gap-4 mt-12">
-                  {events.map((event, index) => (
-                    <Event key={index} eventId={index} event={event} />
-                  ))}
-                </div>
-              )}
-            </>
-          </>
-        )}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold">OUR NETWORKS</h2>
+            <div className="flex space-x-8 animate-pulse" id="keybenefits">
+              <Image src="/home/ethereum-logo.svg" alt="Ethereum" width={230} height={55} />
+              <Image src="/home/polygon-logo.svg" alt="Polygon" width={230} height={55} />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-purple-500">KEY BENEFITS</h2>
+            <p className="text-3xl">Attention Grabbing Headline ✨</p>
+          </div>
+          <div className="flex justify-center space-x-4">
+            <HomeCard
+              icon="/home/ticket-icon.svg"
+              title="Cross-Blockchain"
+              description="Ticket transfer between different blockchains, guaranteeing security and reliability."
+            />
+            <HomeCard
+              icon="/home/secure-icon.svg"
+              title="Secure"
+              description="Tickets issued as NFTs eliminate the risk of counterfeiting and unauthorized resale."
+            />
+            <HomeCard
+              icon="/home/magnifier-icon.svg"
+              title="Transparent"
+              description="Monitor ticket issuance and distribution in real time with full transparency."
+            />
+          </div>
+
+          <div className=" space-x-4" id="roadmap">
+            <ProductPlan />
+          </div>
+
+          <CTAHome />
+        </main>
       </div>
     </>
   );

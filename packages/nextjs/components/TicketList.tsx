@@ -2,15 +2,15 @@
 import React, { useEffect, useState } from "react";
 import SeeEventsButton from "./SeeEventsButton";
 import { Ticket } from "lucide-react";
+import { useAccount } from "wagmi";
 import EventTicket from "~~/components/EventTicket";
-import { notification } from "~~/utils/scaffold-eth";
 import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { EventModel } from "~~/models/event.model";
-import { useAccount } from "wagmi";
+import { notification } from "~~/utils/scaffold-eth";
 
 const TicketList: React.FC = () => {
   const [tickets, setTickets] = useState<EventModel[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { data: minterContract, isLoading: isLoadingContract } = useScaffoldContract({
     contractName: "Minter",
   });
@@ -26,9 +26,9 @@ const TicketList: React.FC = () => {
 
   useEffect(() => {
     const fetchTickets = async () => {
-      if(!isLoadingContract){
+      if (!isLoadingContract) {
         try {
-          setIsLoading(true)
+          setIsLoading(true);
           const ticketsFetched = [];
           if (totalTickets && totalTickets.length > 0) {
             for (let i = 0; i < totalTickets.length; i++) {
@@ -39,10 +39,10 @@ const TicketList: React.FC = () => {
         } catch (error: any) {
           notification.error("Error fetching total events:", error);
         } finally {
-          setIsLoading(false)
+          setIsLoading(false);
         }
       }
-    }
+    };
     fetchTickets();
   }, [totalTickets, isLoadingContract]);
 

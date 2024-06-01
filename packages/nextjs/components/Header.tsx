@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
@@ -13,10 +14,29 @@ type HeaderMenuLink = {
   icon?: React.ReactNode;
 };
 
-export const menuLinks: HeaderMenuLink[] = [
+type DefaultMenu = {
+  menuLinks: HeaderMenuLink[];
+};
+
+const homeMenuLinks: HeaderMenuLink[] = [
+  {
+    label: "Key Benefits",
+    href: "/#keybenefits",
+  },
+  {
+    label: "Roadmap",
+    href: "/#roadmap",
+  },
+];
+
+const defaultMenuLinks: HeaderMenuLink[] = [
+  {
+    label: "Home",
+    href: "/",
+  },
   {
     label: "Events",
-    href: "/",
+    href: "/events",
   },
   {
     label: "My Tickets",
@@ -29,7 +49,7 @@ export const menuLinks: HeaderMenuLink[] = [
   },
 ];
 
-export const HeaderMenuLinks = () => {
+export const HeaderMenuLinks = ({ menuLinks }: DefaultMenu) => {
   const pathname = usePathname();
 
   return (
@@ -37,8 +57,8 @@ export const HeaderMenuLinks = () => {
       {menuLinks.map(({ label, href }) => {
         const isActive = pathname === href;
         return (
-          <li key={href} className={` text-sm  ${isActive ? "border-b-2 border-secondary font-bold" : ""}`}>
-            <Link className={`${isActive ? "bg-transparent" : ""} hover:bg-transparent`} href={href} passHref>
+          <li key={href} className={`text-sm ${isActive ? "border-b-2 border-secondary font-bold" : ""}`}>
+            <Link className={`${isActive ? "bg-transparent" : ""} hover:bg-transparent`} href={href} passHref scroll>
               <span>{label}</span>
             </Link>
           </li>
@@ -52,12 +72,16 @@ export const HeaderMenuLinks = () => {
  * Site header
  */
 export const Header = () => {
+  const pathname = usePathname();
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const burgerMenuRef = useRef<HTMLDivElement>(null);
   useOutsideClick(
     burgerMenuRef,
     useCallback(() => setIsDrawerOpen(false), []),
   );
+
+  const menuLinks = pathname === "/" ? homeMenuLinks : defaultMenuLinks;
 
   return (
     <div className="sticky bg-gradient-header lg:static top-0 navbar min-h-0 border-b-2 border-zinc-900 flex-shrink-0 justify-between z-20 px-0 sm:px-2  bg-gradient-to-r from-[rgba(255,255,255,.1)] to-[rgba(255,255,255,0)]  backdrop-blur-[5px]">
@@ -80,19 +104,20 @@ export const Header = () => {
                 setIsDrawerOpen(false);
               }}
             >
-              <HeaderMenuLinks />
+              <HeaderMenuLinks menuLinks={menuLinks} />
             </ul>
           )}
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">ChainPass</span>
+          <div className="flex flex-wrap ml-4 gap-4 items-center">
+            <Image src={"/logo.svg"} alt="Chain Pass logo" width={30} height={31} />
+            <span className="font-bold leading-tight text-xl">ChainPass</span>
           </div>
         </Link>
       </div>
       <div>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
-          <HeaderMenuLinks />
+          <HeaderMenuLinks menuLinks={menuLinks} />
         </ul>
       </div>
       <div className="navbar-end flex-grow mr-4">
