@@ -3,9 +3,8 @@ import Image from "next/image";
 import { CalendarDays } from "lucide-react";
 import { EventModel } from "~~/models/event.model";
 
-
-const EventTicket: React.FC<EventModel> = (event) => {
-  const {name, date, description} = event
+const EventTicket: React.FC<EventModel> = event => {
+  const { name, date, description } = event;
   const formatDate = (timestamp: bigint) => {
     const date = new Date(Number(timestamp)); // Convierte el BigInt a un número y luego a un objeto Date
     return date.toLocaleDateString(); // Puedes personalizar el formato si lo deseas

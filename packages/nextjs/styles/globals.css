@@ -129,6 +129,33 @@ p {
   border-radius: 10%;
 }
 
+.card {
+  background: linear-gradient(137.6deg, rgba(248, 248, 255, 0.1) 1.58%, rgba(248, 248, 255, 0) 103.38%);
+}
+
 .btn.btn-ghost {
   @apply shadow-none;
+}
+
+.animate-cube-spin {
+  animation: spin 10s linear infinite;
+}
+
+.timeline-color-unchecked {
+  background: #f8f8ff4d;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

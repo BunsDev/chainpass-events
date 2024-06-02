@@ -13,7 +13,7 @@ interface IEventProps {
 export const Event: React.FC<IEventProps> = ({ event, eventId }) => {
   const { name, ticketSupply, ticketsMinted, description } = event;
   const { writeContractAsync, isSuccess, isPending } = useScaffoldWriteContract("Minter");
-3
+  3;
   const getAvailableTickets = () => {
     return Number(ticketSupply) - Number(ticketsMinted);
   };
@@ -29,7 +29,7 @@ export const Event: React.FC<IEventProps> = ({ event, eventId }) => {
     } catch (error) {
       notification.error("Something went wrong!");
     } finally {
-      if(isSuccess){
+      if (isSuccess) {
         notification.success("Ticket claimed!");
       }
     }
@@ -39,13 +39,7 @@ export const Event: React.FC<IEventProps> = ({ event, eventId }) => {
     <div className="card backdrop-blur-xl">
       <div className="card-body p-4 rounded-2xl">
         <figure className="max-h-[125px] rounded-[10px]">
-          <Image
-            src={"/logogm2.jpeg" }
-            alt="Event"
-            className="w-full"
-            width={400}
-            height={400}
-          />
+          <Image src={"/logogm2.jpeg"} alt="Event" className="w-full" width={400} height={400} />
         </figure>
         <div className="text-left mb-4 spacing-y-2  text-sm">
           <h2 className="card-title mb-2 text-2xl">{name}</h2>
@@ -58,11 +52,13 @@ export const Event: React.FC<IEventProps> = ({ event, eventId }) => {
         </div>
 
         <div className="card-actions justify-end mt-4">
-        <button
+          <button
             className="btn btn-primary"
             disabled={isPending || getAvailableTickets() === 0}
             onClick={() => handlePurchaseTicket(eventId)}
-          >   Get Your Ticket
+          >
+            {" "}
+            Get Your Ticket
           </button>
         </div>
       </div>
