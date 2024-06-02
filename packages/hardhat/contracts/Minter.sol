@@ -69,7 +69,7 @@ contract Minter is Ownable {
 		require(eventInfo.exists, "Event does not exist");
 		require(eventInfo.ticketsMinted < eventInfo.ticketSupply, "No more tickets available");
 
-		uint256 tokenId = eventInfo.ticketsMinted;
+        uint256 tokenId = eventInfo.tokenIdStartAt + eventInfo.ticketsMinted;
 		eventInfo.ticketsMinted++;
 
 		if (isPolygon) {

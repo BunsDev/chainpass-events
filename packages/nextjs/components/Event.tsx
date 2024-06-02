@@ -23,7 +23,7 @@ export const Event: React.FC<IEventProps> = ({ event, eventId }) => {
         functionName: "claimTicket",
         args: [
           BigInt(id),
-          false,
+          true,
         ],
       });
     } catch (error) {
