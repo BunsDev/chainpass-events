@@ -21,7 +21,10 @@ export const Event: React.FC<IEventProps> = ({ event, eventId }) => {
     try {
       await writeContractAsync({
         functionName: "claimTicket",
-        args: [BigInt(id)],
+        args: [
+          BigInt(id),
+          false,
+        ],
       });
     } catch (error) {
       notification.error("Something went wrong!");
